@@ -1,0 +1,40 @@
+{
+  "name": "portfolio-backend",
+  "version": "1.0.0",
+  "description": "Dev Naimul Portfolio Backend API with Load Balancing",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "pm2:start": "pm2 start ecosystem.config.js --env production",
+    "pm2:dev": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop all",
+    "pm2:restart": "pm2 restart all",
+    "pm2:delete": "pm2 delete all",
+    "pm2:logs": "pm2 logs",
+    "pm2:monitor": "pm2 monit",
+    "pm2:status": "pm2 status"
+  },
+  "keywords": [
+    "portfolio",
+    "api",
+    "express",
+    "mongodb",
+    "load-balancing"
+  ],
+  "author": "Dev Naimul",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.22.1",
+    "express-validator": "^7.0.0",
+    "mongoose": "^7.0.0",
+    "nodemailer": "^8.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "pm2": "^5.3.0"
+  },
+  "type": "commonjs"
+}
