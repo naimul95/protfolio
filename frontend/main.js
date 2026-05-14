@@ -1,7 +1,7 @@
 // ========================
-// API Configuration
+// CONFIGURATION
 // ========================
-const API_BASE_URL = "http://localhost:5000";
+// const API_BASE_URL = "http://localhost:5000"; // Not needed with EmailJS
 
 // ========================
 // SKILL ICONS & DATA
@@ -23,17 +23,39 @@ const projectImages = {
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.getElementById("hamburger");
   const navLinks = document.getElementById("nav-links");
+  const navOverlay = document.getElementById("nav-overlay");
 
-  hamburger.addEventListener("click", () => {
+  function toggleMenu() {
     hamburger.classList.toggle("active");
     navLinks.classList.toggle("active");
+    navOverlay.classList.toggle("active");
+
+    // Prevent body scroll when menu is open
+    document.body.style.overflow = navLinks.classList.contains("active") ? "hidden" : "auto";
+  }
+
+  function closeMenu() {
+    hamburger.classList.remove("active");
+    navLinks.classList.remove("active");
+    navOverlay.classList.remove("active");
+    document.body.style.overflow = "auto";
+  }
+
+  hamburger.addEventListener("click", toggleMenu);
+
+  // Close menu when clicking on overlay
+  navOverlay.addEventListener("click", closeMenu);
+
+  // Close menu when clicking on nav links
+  navLinks.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
   });
 
-  navLinks.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      hamburger.classList.remove("active");
-      navLinks.classList.remove("active");
-    });
+  // Close menu on escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navLinks.classList.contains("active")) {
+      closeMenu();
+    }
   });
 });
 
@@ -261,22 +283,17 @@ function showDefaultSkills() {
           </div>
         </div>
         <div class="skill-item">
-          <div class="skill-logo"></div>
-          <span class="skill-name">TAILWIND CSS</span>
+          <div class="skill-logo"><i class="fab fa-bootstrap"></i></div>
+          <span class="skill-name">Tailwind CSS</span>
           <div class="skill-level">
             <div class="level-bar active"></div>
             <div class="level-bar active"></div>
             <div class="level-bar active"></div>
           </div>
         </div>
-        <div class="skill-item">
-          <div class="skill-logo"><i class="fa-brands fa-js"></i></div>
-          <span class="skill-name">JAVASCRIPT</span>
-          <div class="skill-level">
-            <div class="level-bar active"></div>
-            <div class="level-bar active"></div>
-            <div class="level-bar active"></div>
-          </div>
+        
+        </div>
+       
         </div>
       </div>
     </div>
@@ -305,49 +322,60 @@ function showDefaultSkills() {
             <div class="level-bar active"></div>
           </div>
         </div>
+        <div class="skill-item">
+          <div class="skill-logo"><i class="fa-brands fa-js"></i></div>
+          <span class="skill-name">JAVASCRIPT</span>
+          <div class="skill-level">
+            <div class="level-bar active"></div>
+            <div class="level-bar active"></div>
+            <div class="level-bar active"></div>
+          </div>
       </div>
     </div>
   `;
 }
 
 // ========================
-// CONTACT FORM SUBMISSION
+// CONTACT FORM SUBMISSION WITH NETLIFY FORMS
 // ========================
 document
   .getElementById("contact-form")
-  .addEventListener("submit", async (e) => {
+  .addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const formData = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      message: document.getElementById("message").value,
-    };
+    const form = e.target;
+    const formData = new FormData(form);
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/send`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const result = await response.json();
+    // Show loading state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;
 
-      if (result.success) {
-        showToast(
-          "✅ Message sent successfully! I will get back to you soon.",
-          "success"
-        );
-        document.getElementById("contact-form").reset();
-      } else {
-        showToast("❌ Error sending message. Please try again.", "error");
-      }
-    } catch (error) {
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString()
+    })
+    .then(() => {
+      showToast(
+        "✅ Message sent successfully! Thank you for reaching out. I'll get back to you soon.",
+        "success"
+      );
+      document.getElementById("contact-form").reset();
+    })
+    .catch((error) => {
       console.error("Error:", error);
       showToast(
-        "❌ Error sending message. Please check your connection.",
+        "❌ Form submission failed. Please email me directly at naimul.dev95@gmail.com",
         "error"
       );
-    }
+    })
+    .finally(() => {
+      // Reset button
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    });
   });
 
 // ========================
@@ -393,12 +421,13 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("load", () => {
   loadProjects();
   loadSkills();
-  checkAPIHealth();
+  // checkAPIHealth(); // Not needed with EmailJS
 });
 
 // ========================
-// CHECK API HEALTH
+// CHECK API HEALTH (Commented out - not needed with EmailJS)
 // ========================
+/*
 async function checkAPIHealth() {
   try {
     const response = await fetch(`${API_BASE_URL.replace("/api", "")}/health`);
@@ -408,6 +437,7 @@ async function checkAPIHealth() {
     console.log("⚠️ API not available (using default data):", error.message);
   }
 }
+*/
 
 // ========================
 // SCROLL ANIMATION

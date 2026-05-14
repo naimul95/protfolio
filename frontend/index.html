@@ -25,15 +25,17 @@
           <span></span>
         </div>
         <ul class="nav-links" id="nav-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#home"><i class="fas fa-home"></i>Home</a></li>
+          <li><a href="#about"><i class="fas fa-user"></i>About</a></li>
+          <li><a href="#skills"><i class="fas fa-code"></i>Skills</a></li>
+          <li><a href="#projects"><i class="fas fa-project-diagram"></i>Projects</a></li>
+          <li><a href="#contact"><i class="fas fa-envelope"></i>Contact</a></li>
         </ul>
       </div>
-      
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
 
     <!-- Hero Section with Animated Background -->
     <section class="hero" id="home">
@@ -123,7 +125,7 @@
       <div class="container">
         <h2 class="section-title">Technical Skills</h2>
         <div class="skills-grid" id="skills-grid">
-          <!-- Skills will be loaded from API -->
+         
         </div>
       </div>
     </section>
@@ -150,13 +152,17 @@
         </p>
 
         <div class="contact-wrapper">
-          <form class="contact-form" id="contact-form">
+          <form class="contact-form" id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hidden">
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
     
-      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="text" id="name" name="name" placeholder="Your Name" required>
 
-      <input type="email" id="email" placeholder="Your Email" required>
+      <input type="email" id="email" name="email" placeholder="Your Email" required>
 
-      <textarea id="message" placeholder="Your Message" required></textarea>
+      <textarea id="message" name="message" placeholder="Your Message" required></textarea>
 
       <button type="submit">Send Message</button>
 
@@ -167,7 +173,10 @@
             <div class="info-card">
               <i class="fas fa-envelope"></i>
               <h3>Email</h3>
-              <a href="mailto:naimul.dev@gmail.com">naimul.dev95@gmail.com</a>
+              <a href="mailto:naimul.dev95@gmail.com">naimul.dev95@gmail.com</a>
+              <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-light);">
+                Or use the contact form above
+              </p>
             </div>
             <div class="info-card">
               <i class="fab fa-linkedin"></i>
